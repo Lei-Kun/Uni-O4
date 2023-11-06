@@ -25,5 +25,5 @@
   |
   <a href=""><strong>Twitter</strong></a>
 </h3>
-
+![Pipeline of Uni-O4 for offline-to-online fine-tuning](./pipeline_gif.gif)
 ## The code is being sorted out, will be here soon
