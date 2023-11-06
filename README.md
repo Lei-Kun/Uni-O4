@@ -28,5 +28,4 @@
 <div align="center">
   <img src="pipeline_gif.gif" alt="Logo" width="100%">
 </div>
-<!-- ![Pipeline of Uni-O4 for offline-to-online fine-tuning](./pipeline_gif.gif) -->
 ## The code is being sorted out, will be here soon
