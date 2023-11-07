@@ -29,4 +29,4 @@
   <img src="pipeline_gif.gif" alt="Logo" width="100%">
 </div>
 
-## The code is being sorted out, will be here soon
+## Code comming soon
