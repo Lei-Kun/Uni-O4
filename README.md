@@ -21,7 +21,7 @@
 <h3 align="center">
   <a href="https://lei-kun.github.io/uni-o4/"><strong>Project Page</strong></a>
   |
-  <a href="https://lei-kun.github.io/uni-o4/"><strong>arXiv</strong></a>
+  <a href="https://arxiv.org/abs/2311.03351"><strong>arXiv</strong></a>
   |
   <a href=""><strong>Twitter</strong></a>
 </h3>
