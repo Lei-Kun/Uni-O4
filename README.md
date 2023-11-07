@@ -23,7 +23,7 @@
   |
   <a href="https://arxiv.org/abs/2311.03351"><strong>arXiv</strong></a>
   |
-  <a href=""><strong>Twitter</strong></a>
+  <a href="https://twitter.com/kunlei15/status/1721885793369964703"><strong>Twitter</strong></a>
 </h3>
 <div align="center">
   <img src="pipeline_gif.gif" alt="Logo" width="100%">
