@@ -28,3 +28,32 @@
 <div align="center">
   <img src="pipeline_gif.gif" alt="Logo" width="100%">
 </div>
+
+## For D4rl benchmark
+### Requirements
+- `torch                         1.12.0`
+- `mujoco                        2.2.1`
+- `mujoco-py                     2.1.2.14`
+- `d4rl                          1.1`
+To install all the required dependencies:
+1. Install MuJoCo from [here](https://mujoco.org/download).
+2. Install Python packages listed in `requirements.txt` using `pip install -r requirements.txt`. You should specify the version of `mujoco-py` in `requirements.txt` depending on the version of MuJoCo engine you have installed.
+3. Manually download and install `d4rl` package from [here](https://github.com/rail-berkeley/d4rl).
+### Running the code 
+- `python main.py`: trains the network, storing checkpoints along the way. Other domain set-up comming soon.
+- `Example`: 
+```bash
+./scripts/mujoco_loco/hm.sh
+```
+## Citation 
+If you use Uni-O4, please cite our paper as follows:
+```
+@inproceedings{
+lei2024unio,
+title={Uni-O4: Unifying Online and Offline Deep Reinforcement Learning with Multi-Step On-Policy Optimization},
+author={Kun LEI and Zhengmao He and Chenhao Lu and Kaizhe Hu and Yang Gao and Huazhe Xu},
+booktitle={The Twelfth International Conference on Learning Representations},
+year={2024},
+url={https://openreview.net/forum?id=tbFBh3LMKi}
+}
+```
