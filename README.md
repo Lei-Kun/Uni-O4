@@ -28,5 +28,3 @@
 <div align="center">
   <img src="pipeline_gif.gif" alt="Logo" width="100%">
 </div>
-
-## Code comming soon
