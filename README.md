@@ -30,22 +30,13 @@
 </div>
 
 ## Code Overview
-We evaluate Uni-O4 on standard D4RL benchmarks during offline and online fine-tuning phases. In addition, we utilize Uni-O4 to enable rapid adaptation of our quadrupedal robot dog to new and challenging environments. This repo contains five branchs:
+We evaluate Uni-O4 on standard D4RL benchmarks during offline and online fine-tuning phases. In addition, we utilize Uni-O4 to enable rapid adaptation of our quadrupedal robot dog to new and challenging environments. This repo contains five branches:
+- `master (default) ->  Uni-O4`
+- `go1-sdk -> sdk set-up for go1 robot`
+- `data-collecting-deployment -> Deploying go1 in real-world for data collecting`
+- `unio4-offline-dog -> Run Uni-O4 on dataset collected dy real-world robot dog`
+- `go1-online-finetuning -> Fine-tuning the robot in real-world online`
 
-branches
-
-  |
-
-  |----master (default) ->  Uni-O4
-
-  |----go1-sdk -> sdk set-up for go1 robot
-
-  |----data-collecting-deployment -> Deploying go1 in real-world for data collecting
-
-  |----unio4-offline-dog -> Run Uni-O4 on dataset collected dy real-world robot dog
-
-  |----go1-online-finetuning -> Fine-tuning the robot in real-world online
-  
 ## For D4RL benchmarks
 ### Requirements
 - `torch                         1.12.0`
