@@ -43,6 +43,7 @@ We evaluate Uni-O4 on standard D4RL benchmarks during offline and online fine-tu
 - `mujoco                        2.2.1`
 - `mujoco-py                     2.1.2.14`
 - `d4rl                          1.1`
+
 To install all the required dependencies:
 1. Install MuJoCo from [here](https://mujoco.org/download).
 2. Install Python packages listed in `requirements.txt` using `pip install -r requirements.txt`. You should specify the version of `mujoco-py` in `requirements.txt` depending on the version of MuJoCo engine you have installed.
