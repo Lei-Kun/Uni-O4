@@ -2,7 +2,7 @@
 
   <h1 align="center"><a href="https://lei-kun.github.io/uni-o4/">Uni-O4</a>:
 <a href="https://lei-kun.github.io/uni-o4/">Uni</a>fying <a href="https://lei-kun.github.io/uni-o4/">O</a>nline and <a href="https://lei-kun.github.io/uni-o4/">O</a>ffline Deep Reinforcement Learning with Multi-Step <a href="https://lei-kun.github.io/uni-o4/">O</a>n-Policy <a href="https://lei-kun.github.io/uni-o4/">O</a>ptimization
-<h2 align="center">Preprints</h2>
+<h2 align="center">ICLR 2024 (rating 6/6/8/8)</h2>
   <p align="center">
     <a><strong>Kun Lei</strong></a>
     ·
