@@ -49,7 +49,7 @@ To install all the required dependencies:
 2. Install Python packages listed in `requirements.txt` using `pip install -r requirements.txt`. You should specify the version of `mujoco-py` in `requirements.txt` depending on the version of MuJoCo engine you have installed.
 3. Manually download and install `d4rl` package from [here](https://github.com/rail-berkeley/d4rl).
 ### Running the code 
-- `python main.py`: trains the network, storing checkpoints along the way. Other domain set-up comming soon.
+- `main.py`: trains the network, storing checkpoints along the way. Other domain set-up comming soon.
 - `Example`: 
 ```bash
 ./scripts/mujoco_loco/hm.sh
