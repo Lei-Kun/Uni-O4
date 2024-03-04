@@ -24,7 +24,7 @@ Create a new script：
 
 `nano realsense.sh`
 
-Copy the following to it:
+Copy the following text to it:
 
 ```
 export REALSENSE_SOURCE_DIR=$HOME/projects/librealsense/
