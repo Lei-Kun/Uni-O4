@@ -58,7 +58,9 @@ To install all the required dependencies:
 ```bash
 ./ppo_finetune/scripts/mujoco_loco/hm.sh
 ```
-## Real-world tasks set-up (comming within one day)
+## Real-world tasks set-up
+See [INSTALL.md](INSTALL.md) for installation instructions. 
+
 ## Citation 
 If you use Uni-O4, please cite our paper as follows:
 ```
