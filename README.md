@@ -50,9 +50,13 @@ To install all the required dependencies:
 3. Manually download and install `d4rl` package from [here](https://github.com/rail-berkeley/d4rl).
 ### Running the code 
 - `main.py`: trains the network, storing checkpoints along the way. Other domain set-up comming soon.
-- `Example`: 
+- `Example - for offline pre-training`: 
 ```bash
 ./scripts/mujoco_loco/hm.sh
+```
+- `Example - for online fine-tuning`: 
+```bash
+./ppo_finetune/scripts/mujoco_loco/hm.sh
 ```
 ## Real-world tasks set-up (comming within one day)
 ## Citation 
