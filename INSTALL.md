@@ -1,25 +1,25 @@
 # Installing Conda Environment for Real-World Applications
 Installation guidance for sim-pretraining and real-world finetuning on quadruped robots.
-# 0 create python/pytorch env (Python 3.6, 3.7, or 3.8 (3.8 recommended))
+## 0 create python/pytorch env (Python 3.6, 3.7, or 3.8 (3.8 recommended))
 ```
 conda create -n unio4-real python=3.8
 conda activate unio4-real
 ```
-# 1 Install Isaac Gym
+## 1 Install Isaac Gym
    - Download and install Isaac Gym Preview 4 (I didn't test the history version) from https://developer.nvidia.com/isaac-gym
    - `cd isaacgym/python && pip install -e .`
    - Try running an example `cd examples && python 1080_balls_of_solitude.py`
    - For troubleshooting check docs `isaacgym/docs/index.html`
 
-# 2 Install legged_gym
+## 2 Install legged_gym
    - `cd ../legged_gym && pip install -e .`
 
-# 3 sdk building
+## 3 sdk building
    - `cd ../go1_sdk`
    - `mkdir build && cd ./build`
    - `cmake ..`
    - `make`
-# 4 hardward T265 Installation
+## 4 hardward T265 Installation
 Create a new script：
 
 `nano realsense.sh`
