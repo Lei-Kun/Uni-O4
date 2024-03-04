@@ -1,0 +1,5 @@
+struct obs_action_lcmt
+{
+    float observation[70];
+    float action[12];
+}
