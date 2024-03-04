@@ -21,8 +21,11 @@ conda activate unio4-real
    - `make`
 # 4 hardward T265 Installation
 Create a new script：
+
 `nano realsense.sh`
+
 Copy the following to it:
+
 ```
 export REALSENSE_SOURCE_DIR=$HOME/projects/librealsense/
 sudo apt-get install guvcview git libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev
