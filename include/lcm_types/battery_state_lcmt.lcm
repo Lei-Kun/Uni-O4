@@ -1,0 +1,8 @@
+struct battery_state_lcmt
+{
+    int32_t current;
+    int16_t cycle;
+    int8_t SOC;
+    int8_t bms_status;
+    int16_t cell_voltage[10];
+}
