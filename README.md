@@ -37,6 +37,8 @@ We evaluate Uni-O4 on standard D4RL benchmarks during offline and online fine-tu
 - `unio4-offline-dog -> Run Uni-O4 on dataset collected dy real-world robot dog`
 - `go1-online-finetuning -> Fine-tuning the robot in real-world online`
 
+Clone each branch:
+`git clone -b [Branch Name] https://github.com/Lei-Kun/Uni-O4.git`
 ## For D4RL benchmarks
 ### Requirements
 - `torch                         1.12.0`
