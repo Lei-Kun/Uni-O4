@@ -34,7 +34,7 @@ We evaluate Uni-O4 on standard D4RL benchmarks during offline and online fine-tu
 - `master (default) ->  Uni-O4`
 - `go1_sdk -> sdk set-up for go1 robot`
 - `data_collecting_deployment -> Deploying go1 in real-world for data collecting`
-- `unio4-offline-dog -> Run Uni-O4 on dataset collected dy real-world robot dog`
+- `unio4-offline-robot -> Run Uni-O4 on dataset collected dy real-world robot dog`
 - `go1-online-finetuning -> Fine-tuning the robot in real-world online`
 
 Clone each branch:
@@ -67,7 +67,7 @@ For real-world adaptation tasks involving quadrupedal robots, our approach invol
 
 1. Pretrining in Issacgym:
 ```
-cd ./unio4-offline-dog
+cd ./unio4-offline-robot
 pip install -e .
 cd ./scripts
 python train.py
@@ -95,8 +95,8 @@ python deploy_policy --deploy_policy 'sim'
 ```
 3. Fine-tuning by uni-o4 offline - run uni-o4 on collected dataset:
 ```
-copy dataset to unio4-offline-dog
-cd ./unio4-offline-dog
+copy dataset to unio4-offline-robot
+cd ./unio4-offline-robot
 ./run.sh
 ```
 4. Fine-tuning by PPO online:
