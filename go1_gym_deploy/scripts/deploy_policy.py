@@ -115,6 +115,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser("Hyperparameters Setting for PPO-continuous")
     parser.add_argument("--deploy_policy", type=str, default='sim', help="choice: sim/offline/online trained policy")
 
+
     args = parser.parse_args()
     label = "gait-conditioned-agility/1000wan_ft/train"
     experiment_name = "example_experiment"
