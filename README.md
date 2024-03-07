@@ -73,13 +73,22 @@ cd ./scripts
 python train.py
 ```
 2. Fine-tuning by uni-o4 offline - collecting data (build sdk follows [INSTALL.md](INSTALL.md)):
+
+1）Start up go1 sdk:
 ```
 cd ./go1_sdk/build
 ./lcm_position
+```
+
+1）Run:
+```
 cd ./data_collecting_deployment
 pip install -e .
 cd ./data_collecting_deployment/go1_gym_deploy/scripts
 python deploy_policy --deploy_policy 'sim'/'offline'/'online'
+```
+
+```
 'sim' -> pretrained policy in simulator
 'offline' -> offline fine-tuned policy in real-world
 'online' -> online fine-tuned policy in real-world
