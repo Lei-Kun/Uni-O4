@@ -85,7 +85,7 @@ cd ./go1_sdk/build
 cd ./data_collecting_deployment
 pip install -e .
 cd ./data_collecting_deployment/go1_gym_deploy/scripts
-python deploy_policy --deploy_policy 'sim'/'offline'/'online'
+python deploy_policy --deploy_policy 'sim'
 ```
 
 ```
