@@ -50,3 +50,8 @@ Run:
 chmod +x realsense.sh
 ./realsense.sh
 ```
+## 5 hardward T265 3D print frame
+3D print the camera mount for fixing t265 on go1 by ./data_collecting_deployment/t265frame.zip.
+<div align="center">
+  <img src="t265_frame.jpg" alt="Logo" width="100%">
+</div>
