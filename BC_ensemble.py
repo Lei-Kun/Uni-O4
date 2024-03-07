@@ -128,6 +128,9 @@ class BehaviorCloning:
             loss = bc_loss - alpha * kl_divergence
         elif self.kl_type == 'heuristic': 
             loss = bc_loss - alpha * (log_prob-max_prob_a.detach()) 
+        else: 
+            loss = torch.where(log_prob > max_prob_a, bc_loss - alpha * (log_prob), bc_loss + alpha * (log_prob))
+            
         return loss.mean(), all_prob_a, means, stds
     
     def get_log_prob(self,s:torch.Tensor,a:torch.Tensor) -> torch.Tensor:

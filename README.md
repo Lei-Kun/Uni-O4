@@ -63,6 +63,41 @@ To install all the required dependencies:
 ## Real-world tasks set-up
 See [INSTALL.md](INSTALL.md) for installation instructions. 
 
+For real-world quadrupedal robot adaptation tasks, we pre-train a policy in simulator with several minutes, then fine-tune the policy in real-world offline and online by uni-o4.
+
+1. Pretrining in Issacgym:
+```
+cd ./unio4-offline-dog
+pip install -e .
+cd ./scripts
+python train.py
+```
+2. Fine-tuning by uni-o4 offline - collecting data (build sdk follows [INSTALL.md](INSTALL.md)):
+```
+cd ./go1_sdk/build
+./lcm_position
+cd ./data_collecting_deployment
+pip install -e .
+cd ./data_collecting_deployment/go1_gym_deploy/scripts
+python deploy_policy --deploy_policy 'sim'/'offline'/'online'
+'sim' -> pretrained policy in simulator
+'offline' -> offline fine-tuned policy in real-world
+'online' -> online fine-tuned policy in real-world
+```
+3. Fine-tuning by uni-o4 offline - run uni-o4 on collected dataset:
+```
+copy dataset to unio4-offline-dog
+cd ./unio4-offline-dog
+./run.sh
+```
+4. Fine-tuning by PPO online:
+```
+cd ./go1_sdk/build
+./lcm_position
+cd ./go1-online-finetuning
+python off2on.py
+```
+
 ## Citation 
 If you use Uni-O4, please cite our paper as follows:
 ```
