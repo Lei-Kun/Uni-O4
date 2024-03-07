@@ -63,7 +63,7 @@ To install all the required dependencies:
 ## Real-world tasks set-up
 See [INSTALL.md](INSTALL.md) for installation instructions. 
 
-For real-world quadrupedal robot adaptation tasks, we pre-train a policy in simulator with several minutes, then fine-tune the policy in real-world offline and online by uni-o4.
+For real-world adaptation tasks involving quadrupedal robots, our approach involves a three-step process. Firstly, we pre-train a policy in a simulator, which takes several minutes to complete. Then, we proceed with fine-tuning the policy in the real-world environment, both offline and online, utilizing the uni-o4 algorithm.
 
 1. Pretrining in Issacgym:
 ```
@@ -80,7 +80,7 @@ cd ./go1_sdk/build
 ./lcm_position
 ```
 
-1）Run:
+2）Run:
 ```
 cd ./data_collecting_deployment
 pip install -e .
