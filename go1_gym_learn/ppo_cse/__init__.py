@@ -53,15 +53,15 @@ class RunnerArgs(PrefixProto, cli=False):
     log_freq = 10
 
     import glob
-    dirs = glob.glob(f"runs/gait-conditioned-agility/2023-08-04/train/*")
-    logdir = sorted(dirs)[-1]
+    # dirs = glob.glob(f"runs/gait-conditioned-agility/2023-08-04/train/*")
+    # logdir = sorted(dirs)[-1]
 
 
     # load and resume
     resume = True
     load_run = -1  # -1 = last run
     checkpoint = -1  # -1 = last saved model
-    resume_path = logdir  + '/checkpoints/ac_weights_000300.pt' # updated from load_run and chkpt
+    # resume_path = logdir  + '/checkpoints/ac_weights_000300.pt' # updated from load_run and chkpt
     resume_curriculum = False
 
 
@@ -232,8 +232,8 @@ class Runner:
                                                                          privileged_obs[num_train_envs:])
                     else:
                         actions_eval = self.alg.actor_critic.act_student(obs_history[num_train_envs:])
-                    dataset['observations'].append(obs)
-                    dataset['actions'].append(actions_train)
+                    # dataset['observations'].append(obs)
+                    # dataset['actions'].append(actions_train)
                     ret = self.env.step(torch.cat((actions_train, actions_eval), dim=0))
                     obs_dict, rewards, dones, infos = ret
                     obs, privileged_obs, obs_history = obs_dict["obs"], obs_dict["privileged_obs"], obs_dict[
@@ -241,10 +241,10 @@ class Runner:
 
                     obs, privileged_obs, obs_history, rewards, dones = obs.to(self.device), privileged_obs.to(
                         self.device), obs_history.to(self.device), rewards.to(self.device), dones.to(self.device)
-                    dataset['terminals'].append(dones)
-                    dataset['rewards'].append(rewards)
-                    if 'time_outs' in infos:
-                        dataset['timeouts'].append(infos['time_outs'].to(self.device))
+                    # dataset['terminals'].append(dones)
+                    # dataset['rewards'].append(rewards)
+                    # if 'time_outs' in infos:
+                    #     dataset['timeouts'].append(infos['time_outs'].to(self.device))
                     self.alg.process_env_step(rewards[:num_train_envs], dones[:num_train_envs], infos)
 
                     if 'train/episode' in infos:
@@ -351,24 +351,24 @@ class Runner:
 
             self.current_learning_iteration += num_learning_iterations
 
-        dataset['observations'] = torch.stack(dataset['observations'], dim=0).permute(1, 0, 2)
-        dataset['actions'] = torch.stack(dataset['actions'], dim=0).permute(1, 0, 2)
-        dataset['rewards'] = torch.stack(dataset['rewards'], dim=0).permute(1, 0)
-        dataset['terminals'] = torch.stack(dataset['terminals'], dim=0).permute(1, 0)
-        if 'time_outs' in infos:
-            dataset['timeouts'] = torch.stack(dataset['timeouts'], dim=0).permute(1, 0)
+        # dataset['observations'] = torch.stack(dataset['observations'], dim=0).permute(1, 0, 2)
+        # dataset['actions'] = torch.stack(dataset['actions'], dim=0).permute(1, 0, 2)
+        # dataset['rewards'] = torch.stack(dataset['rewards'], dim=0).permute(1, 0)
+        # dataset['terminals'] = torch.stack(dataset['terminals'], dim=0).permute(1, 0)
+        # if 'time_outs' in infos:
+        #     dataset['timeouts'] = torch.stack(dataset['timeouts'], dim=0).permute(1, 0)
 
-        dataset['observations'] = dataset['observations'].reshape(-1, dataset['observations'].size(-1)).cpu().detach().numpy()
-        dataset['actions'] = dataset['actions'].reshape(-1, dataset['actions'].size(-1)).cpu().detach().numpy()
-        dataset['rewards'] = dataset['rewards'].reshape(-1).cpu().detach().numpy()
-        dataset['terminals'] = dataset['terminals'].reshape(-1).cpu().detach().numpy()
-        if 'time_outs' in infos:
-            dataset['timeouts'] = dataset['timeouts'].reshape(-1).cpu().detach().numpy()
-        if self.is_save_data:
-            with h5py.File('replay_data2.hdf5', 'w') as f:
-                for key, value in dataset.items():
-                    f.create_dataset(key, data=value)
-            print('data is saved!')
+        # dataset['observations'] = dataset['observations'].reshape(-1, dataset['observations'].size(-1)).cpu().detach().numpy()
+        # dataset['actions'] = dataset['actions'].reshape(-1, dataset['actions'].size(-1)).cpu().detach().numpy()
+        # dataset['rewards'] = dataset['rewards'].reshape(-1).cpu().detach().numpy()
+        # dataset['terminals'] = dataset['terminals'].reshape(-1).cpu().detach().numpy()
+        # if 'time_outs' in infos:
+        #     dataset['timeouts'] = dataset['timeouts'].reshape(-1).cpu().detach().numpy()
+        # if self.is_save_data:
+        #     with h5py.File('replay_data2.hdf5', 'w') as f:
+        #         for key, value in dataset.items():
+        #             f.create_dataset(key, data=value)
+        #     print('data is saved!')
         with logger.Sync():
             logger.torch_save(self.alg.actor_critic.state_dict(), f"checkpoints/ac_weights_{it:06d}.pt")
             logger.duplicate(f"checkpoints/ac_weights_{it:06d}.pt", f"checkpoints/ac_weights_last.pt")
