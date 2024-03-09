@@ -214,7 +214,7 @@ def train_go1(headless=True):
                       Cfg=vars(Cfg))
     gpu_id = 0
     env = HistoryWrapper(env)
-    is_collect_data = True
+    is_collect_data = False
     if is_collect_data:
         runner = Runner(env, is_collect_data=is_collect_data,  device=f"cuda:{gpu_id}")
         num_sample = 5e5 
