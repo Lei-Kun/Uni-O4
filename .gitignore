@@ -3,6 +3,7 @@ __pycache__/**
 1saved_models_True/**
 logs/**
 logs1.0shuffle/**
+logs1.shuffle/**
 base.py
 ppo_finetune/logs/**
 ppo_finetune/logs_noscale/**
