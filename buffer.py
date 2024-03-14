@@ -2,7 +2,7 @@ import os
 import torch
 import numpy as np
 from tqdm import tqdm
-from utils import CONST_EPS
+from utils import CONST_EPS, antmaze_timeout
 from copy import deepcopy
 from utils import RewardScaling, normalize
 class OnlineReplayBuffer:
@@ -180,22 +180,78 @@ class OfflineReplayBuffer(OnlineReplayBuffer):
     ) -> None:
         super().__init__(device, state_dim, action_dim, max_size, percentage)
 
-
     def load_dataset(
-        self, dataset: dict, clip = False
-    ) -> None:
+            self, dataset: dict, clip = False, reward_scale: float = 1., reward_bias: float = 0., is_revise_timeout = False, env_name=None
+        ) -> None:
+        if 'antmaze' in env_name:
+            reward_scale = 10.; reward_bias  = -5.; is_revise_timeout = True
         if clip:
             lim = 1. - 1e-5
             dataset['actions'] = np.clip(dataset['actions'], -lim, lim)
+        if is_revise_timeout:
+            dataset = antmaze_timeout(dataset)
         self._state = dataset['observations'][:-1, :]
 
         self._action = dataset['actions'][:-1, :]
         self._reward = dataset['rewards'].reshape(-1, 1)[:-1, :]
         self._next_state = dataset['observations'][1:, :]
         self._next_action = dataset['actions'][1:, :]
-        self._not_done = 1. - (dataset['terminals'].reshape(-1, 1)[:-1, :] | dataset['timeouts'].reshape(-1, 1)[:-1, :])
 
+        self._not_done = 1. - (dataset['terminals'].reshape(-1, 1)[:-1, :] | dataset['timeouts'].reshape(-1, 1)[:-1, :])
+        self._reward = self._reward * reward_scale + reward_bias
         self._size = len(dataset['actions']) - 1
+
+
+    def load_filter_dataset(
+        self, dataset: dict, gamma: float = 0.99, reward_scale: float = 1., reward_bias: float = 0., clip: bool = False, is_revise_timeout = True, env_name = None) -> None:
+        if 'antmaze' in env_name:
+            reward_scale = 10.; reward_bias  = -5.; is_revise_timeout = True
+        if clip:
+            lim = 1. - 1e-5
+            dataset['actions'] = np.clip(dataset['actions'], -lim, lim)
+        if is_revise_timeout:
+            dataset = antmaze_timeout(dataset)
+        #computing accumulated returns------------------------------------------------------------
+        _reward = dataset['rewards'].reshape(-1,1)
+        print('----------------------------------------------------------sum reward',np.sum(_reward.reshape(-1)))
+        print('----------------------------------------------------------total lenth',len(_reward))
+        _returns = np.zeros_like(_reward)
+        _not_done = 1. - (dataset['terminals'].reshape(-1,1) | dataset['timeouts'].reshape(-1, 1))
+        pre_return = 0
+        for i in tqdm(reversed(range(_reward.shape[0])), desc='Computing the returns'):
+            _returns[i] = _reward[i] + gamma * pre_return * _not_done[i]
+            pre_return = _returns[i]
+        postive_location = np.where(_returns>0)[0]
+        print('----------------------------------------------------------post-filtered lenth', len(postive_location))
+
+        for i, id in enumerate(postive_location[:-1]):
+            self._state[i] = dataset['observations'][id]
+            self._action[i] = dataset['actions'][id]
+            self._reward[i] = _reward[id]
+            self._return[i] = _returns[id]
+            self._not_done[i] = _not_done[id]
+            self._next_state[i] = dataset['observations'][id+1]
+            self._next_action[i] = dataset['actions'][id+1]
+
+        self._size = len(postive_location) - 1
+        print('total length: {}, filtered length: {}'.format(len(dataset['actions']), self._size))
+
+        self._state = self._state[: self._size, :]
+        self._action = self._action[:self._size, :]
+        self._reward = self._reward[:self._size, :] * reward_scale + reward_bias
+        self._next_state = self._next_state[:self._size, :]
+        self._next_action = self._next_action[:self._size, :]
+        self._not_done = self._not_done[:self._size, :]
+        self._return = self._return[:self._size, :]
+
+        if not (reward_scale == 1. and reward_bias == 0.):
+            print('recompute return')
+            # recalculate return, because reward_scale and _bias
+            pre_return = 0
+            for i in tqdm(reversed(range(self._size)), desc='Computing the returns'):
+                self._return[i] = self._reward[i] + gamma * pre_return * self._not_done[i]
+                pre_return = self._return[i] 
+        print('buffer length: {}'.format(len(self._reward)))
 
     def reward_normalize(self, gamma = 0.99, scaling = 'dynamic'): # dynamic/normal/number
         if scaling == 'dynamic':

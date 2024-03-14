@@ -99,3 +99,13 @@ def normalize(observations, actions, rewards, masks, dones_float, next_observati
     rewards *= 1000.0
 
     return rewards
+def antmaze_timeout(dataset):
+    threshold = np.mean(norm(dataset['observations'][1:, :2] - dataset['observations'][:-1, :2], axis=1))
+    print('threshold', threshold)
+    for i in range(dataset['observations'].shape[0]):
+        dataset['timeouts'][i] = False
+    for i in range(dataset['observations'].shape[0] - 1):
+        gap = norm(dataset['observations'][i + 1, :2] - dataset['observations'][i, :2])
+        if gap > threshold * 10:
+            dataset['timeouts'][i] = True
+    return dataset

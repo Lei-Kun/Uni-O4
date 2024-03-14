@@ -82,6 +82,7 @@ if __name__ == "__main__":
     parser.add_argument("--alpha_bppo", default=0.1, type=float)
     parser.add_argument("--scale_strategy", default=None, type=str, help='reward scaling technique: dynamic/normal/number(0.1)')
 
+    parser.add_argument("--eval_freq", default=int(500), type=int)
     parser.add_argument("--is_clip_action", default=False, type=bool)
 
     known_args, _ = parser.parse_known_args()
@@ -102,7 +103,7 @@ if __name__ == "__main__":
     current_time = time.strftime("%Y_%m_%d__%H_%M_%S", time.localtime())
     path = os.path.join(args.path, args.env, str(args.seed))
     bc_path = os.path.join(path, 'bc_/{}'.format(args.alpha_bc))
-
+    # bc_path = os.path.join(path, 'bc_{}_{}/{}'.format(args.bc_hidden_dim, args.bc_depth, args.alpha_bc))
     os.makedirs(bc_path, exist_ok=True)
     # save args
     os.makedirs(os.path.join(path, 'pi', current_time), exist_ok=True)
@@ -130,7 +131,7 @@ if __name__ == "__main__":
     # offline dataset to replay buffer
     dataset = env.get_dataset()
     replay_buffer = OfflineReplayBuffer(device, state_dim, action_dim, len(dataset['actions']) - 1, percentage=args.percentage)
-    replay_buffer.load_dataset(dataset=dataset, clip=args.is_clip_action)
+    replay_buffer.load_dataset(dataset=dataset, clip=args.is_clip_action, env_name=args.env)
     replay_buffer.reward_normalize(args.gamma, args.scale_strategy)
     replay_buffer.compute_return(args.gamma)
 
@@ -143,13 +144,21 @@ if __name__ == "__main__":
         mean, std = 0., 1.
 
     eval_buffer = OfflineReplayBuffer(device, state_dim, action_dim, len(dataset['actions']) - 1, percentage=args.percentage)
-    eval_buffer.load_dataset(dataset=dataset, clip=args.is_clip_action)
+    eval_buffer.load_dataset(dataset=dataset, clip=args.is_clip_action, env_name=args.env)
     eval_buffer.reward_normalize(args.gamma, args.scale_strategy)
     eval_buffer.compute_return(args.gamma)
     if args.is_eval_state_norm:
         _, _ = eval_buffer.normalize_state()
     eval_buffer.augmentaion()
-
+    if 'antmaze' in args.env:
+        bc_buffer = OfflineReplayBuffer(device, state_dim, action_dim, len(dataset['actions']) - 1, percentage=args.percentage)
+        if args.is_filter_bc:
+            bc_buffer.load_filter_dataset(dataset=dataset, gamma=args.gamma, clip=args.is_clip_action, env_name=args.env)
+            if args.is_state_norm:
+                bc_buffer._state = (bc_buffer._state - mean) / std
+                bc_buffer._next_state = (bc_buffer._next_state - mean) / std
+    else:
+        bc_buffer = replay_buffer
 
     # summarywriter logger
     comment = args.env + '_' + str(args.seed)
@@ -238,7 +247,7 @@ if __name__ == "__main__":
         best_bc_scores = np.zeros(args.num_policies)
         best_bc_meta_score = 0
         for step in tqdm(range(int(args.bc_steps)), desc='bc updating ......'):
-            bc_losses = ensemble_bc.joint_train(replay_buffer,alpha=args.alpha_bc)
+            bc_losses = ensemble_bc.joint_train(bc_buffer, alpha=args.alpha_bc)
 
             if step % int(args.log_freq) == 0:
 
@@ -289,7 +298,7 @@ if __name__ == "__main__":
         losses = abppo.joint_train(replay_buffer, value, args.is_clip_decay, args.is_bppo_lr_decay, is_linear_decay=args.is_linear_decay \
                                    , bppo_lr_now= bppo_lr_now, clip_ratio_now= clip_ratio_now, Q=Q, iql=iql)
 
-        if (step+1) % 500 == 0:
+        if (step+1) % args.eval_freq == 0:
             current_bppo_scores = abppo.off_evaluate(args.env, args.seed, mean, std)
             meta_score = abppo.mixed_offline_evaluate(args.env, args.seed, mean, std)
             scores.append(current_bppo_scores)
