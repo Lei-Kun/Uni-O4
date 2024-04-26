@@ -14,7 +14,7 @@ from torch.distributions import Normal
 LOG_SIG_MAX = 2
 LOG_SIG_MIN = -20
 
-
+import pdb
 class BehaviorCloning:
     _device: torch.device
     _policy: GaussPolicyMLP
@@ -100,7 +100,7 @@ class BehaviorCloning:
             max_prob_a, policy_id = all_prob_a_t.max(-1) # tensor: (batch_size)
 
         elif bc_kl == 'data':
-            if len(policies) != 1:
+            if len(policies) != 1 or len(all_prob_a) == 0:
                 for bc in policies:
                     dist, mean, std = bc._policy.predict(s)
                     prob_a = log_prob_func(dist, a) 

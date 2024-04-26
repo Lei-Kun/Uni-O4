@@ -11,5 +11,3 @@ ppo_finetune/logs_noscale/**
 halfmr.sh
 hmr.sh
 wmr.sh
-
-main.py
