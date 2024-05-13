@@ -5,6 +5,7 @@ log/**
 logs/**
 logs1.0shuffle/**
 logs1.shuffle/**
+logsshuffle/**
 logs_scale/**
 base.py
 ppo_finetune/logs/**
