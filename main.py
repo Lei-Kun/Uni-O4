@@ -45,6 +45,7 @@ if __name__ == "__main__":
     parser.add_argument("--bc_lr", default=1e-4, type=float)
     parser.add_argument("--bc_batch_size", default=512, type=int)
     parser.add_argument("--pi_activation_f", default='relu', type=str)
+    parser.add_argument("--is_filter_bc", default=False, type=bool)
     # For BPPO 
     parser.add_argument("--alpha_bc", default=0.1, type=float) 
     parser.add_argument("--num_policies", default=int(4), type=int) 
@@ -67,7 +68,7 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", default=None, type=float)
     parser.add_argument("--is_iql", default=False, type=bool)
     parser.add_argument("--is_double_q", default=True, type=bool)
-    parser.add_argument("--is_shuffle", default=True, type=bool)
+    parser.add_argument("--is_shuffle", default=False, type=bool)
     parser.add_argument("--percentage", default=1.0, type=float)
 
     parser.add_argument("--eval_step", default=100, type=int)
@@ -82,9 +83,11 @@ if __name__ == "__main__":
     parser.add_argument("--alpha_bppo", default=0.1, type=float)
     parser.add_argument("--scale_strategy", default=None, type=str, help='reward scaling technique: dynamic/normal/number(0.1)')
 
+
     parser.add_argument("--eval_freq", default=int(500), type=int)
     parser.add_argument("--is_clip_action", default=False, type=bool)
 
+    parser.add_argument("--eval_episode", default=10, type=int)
     known_args, _ = parser.parse_known_args()
     default_args = loaded_args[known_args.env]
     for arg_key, default_value in default_args.items():
@@ -102,7 +105,10 @@ if __name__ == "__main__":
     # path
     current_time = time.strftime("%Y_%m_%d__%H_%M_%S", time.localtime())
     path = os.path.join(args.path, args.env, str(args.seed))
-    bc_path = os.path.join(path, 'bc_/{}'.format(args.alpha_bc))
+    if 'antmaze' in args.env:
+        bc_path = os.path.join(path, 'bc/{}'.format(args.alpha_bc))
+    else:
+        bc_path = os.path.join(path, 'bc_/{}'.format(args.alpha_bc))
     # bc_path = os.path.join(path, 'bc_{}_{}/{}'.format(args.bc_hidden_dim, args.bc_depth, args.alpha_bc))
     os.makedirs(bc_path, exist_ok=True)
     # save args
@@ -191,8 +197,12 @@ if __name__ == "__main__":
 
     if args.is_iql:
         # Q_bc training
-        Q_bc_path = os.path.join(path, 'Q_bc.pt')
-        value_path = os.path.join(path, 'value.pt')
+        if 'antmaze' in args.env:
+            Q_bc_path = os.path.join(path, 'Q_bc_{}{}{}.pt'.format(args.scale_strategy, str(args.omega), str(3)))
+            value_path = os.path.join(path, 'value_{}{}{}.pt'.format(args.scale_strategy, str(args.omega), str(3)))
+        else:
+            Q_bc_path = os.path.join(path, 'Q_bc.pt')
+            value_path = os.path.join(path, 'value.pt')
         if os.path.exists(Q_bc_path):
             iql.load(Q_bc_path, value_path)
         else:
@@ -240,7 +250,10 @@ if __name__ == "__main__":
     dynamics =  train_dynamics(args, env, eval_buffer)
 
     # bc training
-    best_bc_path = os.path.join(bc_path, 'bc_last_{}.pt'.format(1))
+    if 'antmaze' in args.env:
+        best_bc_path = os.path.join(bc_path, 'bc_3_{}.pt'.format(1))
+    else:
+        best_bc_path = os.path.join(bc_path, 'bc_last_{}.pt'.format(1))
     if not os.path.exists(best_bc_path):
         save_id = 0
         save_freq = int(args.bc_steps / args.save_num)
@@ -267,9 +280,12 @@ if __name__ == "__main__":
         ensemble_bc.ensemble_save(save_path,index)
 
     # bppo training
-    best_bc_path = os.path.join(bc_path, 'bc_last') 
+    if 'antmaze' in args.env:
+        best_bc_path = os.path.join(bc_path, 'bc_3')
+    else:
+        best_bc_path = os.path.join(bc_path, 'bc_last') 
     abppo.load_bc(best_bc_path)
-    best_bppo_scores = abppo.off_evaluate(args.env, args.seed, mean, std)
+    best_bppo_scores = abppo.off_evaluate(args.env, args.seed, mean, std , args.eval_episode)
     meta_score = abppo.mixed_offline_evaluate(args.env, args.seed, mean, std)
     best_mean_qs = abppo.ope_dynamics_eval(args, dynamics_eval, q_eval, dynamics, eval_buffer, env, mean, std)
     best_bppo_path = os.path.join(path, 'pi', current_time)
@@ -299,7 +315,7 @@ if __name__ == "__main__":
                                    , bppo_lr_now= bppo_lr_now, clip_ratio_now= clip_ratio_now, Q=Q, iql=iql)
 
         if (step+1) % args.eval_freq == 0:
-            current_bppo_scores = abppo.off_evaluate(args.env, args.seed, mean, std)
+            current_bppo_scores = abppo.off_evaluate(args.env, args.seed, mean, std, args.eval_episode)
             meta_score = abppo.mixed_offline_evaluate(args.env, args.seed, mean, std)
             scores.append(current_bppo_scores)
             meta_scores.append(meta_score)

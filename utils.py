@@ -4,7 +4,7 @@ from torch.distributions import Distribution
 import numpy as np
 from tqdm import tqdm
 CONST_EPS = 1e-10
-
+from numpy.linalg import norm
 
 def orthogonal_initWeights(
     net: nn.Module,

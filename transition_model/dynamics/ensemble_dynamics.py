@@ -16,6 +16,7 @@ class EnsembleDynamics(BaseDynamics):
         optim: torch.optim.Optimizer,
         scaler: StandardScaler,
         terminal_fn: Callable[[np.ndarray, np.ndarray, np.ndarray], np.ndarray],
+        env = None,
         penalty_coef: float = 0.0,
         uncertainty_mode: str = "aleatoric"
     ) -> None:
@@ -24,7 +25,7 @@ class EnsembleDynamics(BaseDynamics):
         self.terminal_fn = terminal_fn
         self._penalty_coef = penalty_coef
         self._uncertainty_mode = uncertainty_mode
-
+        self._env = env
     @ torch.no_grad()
     def step(
         self,
@@ -49,7 +50,7 @@ class EnsembleDynamics(BaseDynamics):
         
         next_obs = samples[..., :-1]
         reward = samples[..., -1:]
-        terminal = self.terminal_fn(obs, action, next_obs)
+        terminal = self.terminal_fn(obs, action, next_obs, self._env)
         info = {}
         info["raw_reward"] = reward
 

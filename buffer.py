@@ -181,7 +181,7 @@ class OfflineReplayBuffer(OnlineReplayBuffer):
         super().__init__(device, state_dim, action_dim, max_size, percentage)
 
     def load_dataset(
-            self, dataset: dict, clip = False, reward_scale: float = 1., reward_bias: float = 0., is_revise_timeout = False, env_name=None
+            self, dataset: dict, clip = False, reward_scale: float = 1., reward_bias: float = 0., is_revise_timeout = False, env_name='env'
         ) -> None:
         if 'antmaze' in env_name:
             reward_scale = 10.; reward_bias  = -5.; is_revise_timeout = True

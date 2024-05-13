@@ -1,7 +1,7 @@
 from .gym import *
 from .adroit import *
 from .neorl import *
-
+from .antmaze import *
 
 loaded_args = {
     # d4rl gym
@@ -21,6 +21,13 @@ loaded_args = {
     # d4rl adroit
     "pen-cloned-v1": pen_cloned_args,
     "pen-human-v1": pen_human_args,
+
+    "antmaze-umaze-v2": antmaze_umaze_args,
+    "antmaze-umaze-diverse-v2": antmaze_umaze_diverse_args,
+    "antmaze-medium-play-v2": antmaze_medium_play_args,
+    "antmaze-medium-diverse-v2": antmaze_medium_diverse_args,
+    "antmaze-large-play-v2": antmaze_large_play_args,
+    "antmaze-large-diverse-v2": antmaze_large_diverse_args,
 
     # neorl
     "HalfCheetah-v3-low": halfcheetah_v3_low_args,

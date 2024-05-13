@@ -104,7 +104,8 @@ def train_dynamics(args, env, replay_buffer):
         dynamics_model,
         dynamics_optim,
         scaler,
-        termination_fn
+        termination_fn,
+        env
     )
 
     # train
