@@ -15,7 +15,7 @@ do
         --seed $seed \
         --alpha_bc $alpha_bc \
         --temperature $temperature \
-        --path 'logs_scale' \
+        --path 'logs' \
         --is_iql True \
         --bppo_lr 3e-5 \
         --omega 0.9 \

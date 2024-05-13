@@ -68,7 +68,7 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", default=None, type=float)
     parser.add_argument("--is_iql", default=False, type=bool)
     parser.add_argument("--is_double_q", default=True, type=bool)
-    parser.add_argument("--is_shuffle", default=False, type=bool)
+    parser.add_argument("--is_shuffle", default=True, type=bool)
     parser.add_argument("--percentage", default=1.0, type=float)
 
     parser.add_argument("--eval_step", default=100, type=int)

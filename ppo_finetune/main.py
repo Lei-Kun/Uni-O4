@@ -71,7 +71,7 @@ if __name__ == '__main__':
         args.r_scale = 0.1
     
     # align config params with offline phase, e.g., use_state_norm, use_tanh etc.
-    load_path = os.path.join('../logs1.0shuffle', args.env_name, str(args.seed))
+    load_path = os.path.join('../logs', args.env_name, str(args.seed))
     config_path = os.path.join(load_path, args.pi_load_path)
     dirs = glob.glob(f"{config_path}/*")
     logdir = sorted(dirs)[-1]

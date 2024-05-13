@@ -21,13 +21,25 @@ loaded_args = {
     # d4rl adroit
     "pen-cloned-v1": pen_cloned_args,
     "pen-human-v1": pen_human_args,
+    "door-cloned-v1": pen_cloned_args,
+    "door-human-v1": pen_human_args,
+    "hammer-cloned-v1": pen_cloned_args,
+    "hammer-human-v1": pen_human_args,
+    "relocate-cloned-v1": pen_cloned_args,
+    "relocate-human-v1": pen_human_args,
 
+    # d4rl antmaze
     "antmaze-umaze-v2": antmaze_umaze_args,
     "antmaze-umaze-diverse-v2": antmaze_umaze_diverse_args,
     "antmaze-medium-play-v2": antmaze_medium_play_args,
     "antmaze-medium-diverse-v2": antmaze_medium_diverse_args,
     "antmaze-large-play-v2": antmaze_large_play_args,
     "antmaze-large-diverse-v2": antmaze_large_diverse_args,
+
+    # d4rl kitchen
+    "kitchen-partial-v0": pen_human_args,
+    "kitchen-complete-v0": pen_human_args,
+    "kitchen-mixed-v0": pen_human_args,
 
     # neorl
     "HalfCheetah-v3-low": halfcheetah_v3_low_args,
