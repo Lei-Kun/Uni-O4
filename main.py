@@ -105,10 +105,7 @@ if __name__ == "__main__":
     # path
     current_time = time.strftime("%Y_%m_%d__%H_%M_%S", time.localtime())
     path = os.path.join(args.path, args.env, str(args.seed))
-    if 'antmaze' in args.env:
-        bc_path = os.path.join(path, 'bc/{}'.format(args.alpha_bc))
-    else:
-        bc_path = os.path.join(path, 'bc_/{}'.format(args.alpha_bc))
+    bc_path = os.path.join(path, 'bc_/{}'.format(args.alpha_bc))
     # bc_path = os.path.join(path, 'bc_{}_{}/{}'.format(args.bc_hidden_dim, args.bc_depth, args.alpha_bc))
     os.makedirs(bc_path, exist_ok=True)
     # save args
@@ -197,12 +194,8 @@ if __name__ == "__main__":
 
     if args.is_iql:
         # Q_bc training
-        if 'antmaze' in args.env:
-            Q_bc_path = os.path.join(path, 'Q_bc_{}{}{}.pt'.format(args.scale_strategy, str(args.omega), str(3)))
-            value_path = os.path.join(path, 'value_{}{}{}.pt'.format(args.scale_strategy, str(args.omega), str(3)))
-        else:
-            Q_bc_path = os.path.join(path, 'Q_bc.pt')
-            value_path = os.path.join(path, 'value.pt')
+        Q_bc_path = os.path.join(path, 'Q_bc.pt')
+        value_path = os.path.join(path, 'value.pt')
         if os.path.exists(Q_bc_path):
             iql.load(Q_bc_path, value_path)
         else:
@@ -250,10 +243,7 @@ if __name__ == "__main__":
     dynamics =  train_dynamics(args, env, eval_buffer)
 
     # bc training
-    if 'antmaze' in args.env:
-        best_bc_path = os.path.join(bc_path, 'bc_3_{}.pt'.format(1))
-    else:
-        best_bc_path = os.path.join(bc_path, 'bc_last_{}.pt'.format(1))
+    best_bc_path = os.path.join(bc_path, 'bc_last_{}.pt'.format(1))
     if not os.path.exists(best_bc_path):
         save_id = 0
         save_freq = int(args.bc_steps / args.save_num)
@@ -280,10 +270,7 @@ if __name__ == "__main__":
         ensemble_bc.ensemble_save(save_path,index)
 
     # bppo training
-    if 'antmaze' in args.env:
-        best_bc_path = os.path.join(bc_path, 'bc_3')
-    else:
-        best_bc_path = os.path.join(bc_path, 'bc_last') 
+    best_bc_path = os.path.join(bc_path, 'bc_last') 
     abppo.load_bc(best_bc_path)
     best_bppo_scores = abppo.off_evaluate(args.env, args.seed, mean, std , args.eval_episode)
     meta_score = abppo.mixed_offline_evaluate(args.env, args.seed, mean, std)
