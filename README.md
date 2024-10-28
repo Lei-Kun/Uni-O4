@@ -60,6 +60,10 @@ To install all the required dependencies:
 ```bash
 ./ppo_finetune/scripts/mujoco_loco/hm.sh
 ```
+
+```bash
+The key hyper-parameters for the offline phase, are whether state normalization is chosen, the rollout steps for offline policy evaluation, and the policy improvement learning rate.
+```
 ## Real-world tasks set-up
 See [INSTALL.md](INSTALL.md) for installation instructions. 
 
