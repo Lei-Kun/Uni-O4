@@ -61,9 +61,11 @@ To install all the required dependencies:
 ./ppo_finetune/scripts/mujoco_loco/hm.sh
 ```
 
-#### The key hyper-parameters for the offline phase, are whether state normalization is chosen, the rollout steps for offline policy evaluation, and the policy improvement learning rate.
+#### NOTE1: The key hyper-parameters for the offline phase, are whether state normalization is chosen, the rollout steps for offline policy evaluation, and the policy improvement learning rate.
 
-#### During the offline policy improvement stage, if the OPE score (i.e., 'q mean') becomes excessively large or unstable, consider reducing the number of rollout steps.
+#### NOTE2: During the offline policy improvement stage, if the OPE score (i.e., 'q mean') becomes excessively large or unstable, consider reducing the number of rollout steps.
+
+#### NOTE3: The performance of online PPO largely depends on the hyper-parameters and some well-known tricks, see [here](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/).
 
 ## Real-world tasks set-up
 See [INSTALL.md](INSTALL.md) for installation instructions. 
