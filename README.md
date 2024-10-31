@@ -64,6 +64,10 @@ To install all the required dependencies:
 ```bash
 The key hyper-parameters for the offline phase, are whether state normalization is chosen, the rollout steps for offline policy evaluation, and the policy improvement learning rate.
 ```
+
+```bash
+During the offline policy improvement stage, if the OPE score (i.e., 'q mean') becomes excessively large or unstable, consider reducing the number of rollout steps.
+```
 ## Real-world tasks set-up
 See [INSTALL.md](INSTALL.md) for installation instructions. 
 
