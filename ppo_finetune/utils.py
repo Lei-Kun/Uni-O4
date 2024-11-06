@@ -157,10 +157,12 @@ def load_config(logdir, args):
     if args.scale_strategy == None:
         args.v_hidden_width = int(loaded_config['v_hidden_dim'] )
         args.v_depth = int(loaded_config['v_depth'])
-    args.use_state_norm = bool(loaded_config['is_state_norm'])
+    assert isinstance(loaded_config['is_state_norm'], str), "Error: 'is_state_norm' should be a string, i.e., True or False from offline phase."
+    args.use_state_norm = not (loaded_config['is_state_norm'].lower() == 'false')
     if loaded_config['pi_activation_f'] == 'tanh':
         args.use_tanh = True
-    args.is_shuffle = bool(loaded_config['is_shuffle'])
+    assert isinstance(loaded_config['is_shuffle'], str), "Error: 'is_shuffle' should be a string, i.e., True or False from offline phase"
+    args.is_shuffle = not (loaded_config['is_shuffle'].lower() == 'false')
     
     return args
 
