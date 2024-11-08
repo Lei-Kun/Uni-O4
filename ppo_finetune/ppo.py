@@ -68,11 +68,11 @@ class PPO():
         last_scores = np.loadtxt(os.path.join(pi_path, 'each_scores.csv'), delimiter=',')[-1]
         pi_id = np.where( last_scores == np.max(get_values_by_indices(last_scores, get_top_x_indices(ope_scores, evaluate_budget))))[0]
 
-        self.actor.load_state_dict(torch.load(os.path.join(pi_net_path, 'pi_{}.pt'.format(pi_id[0])), map_location=self._device))
+        self.actor.load_state_dict(torch.load(os.path.join(pi_net_path, 'pi_{}.pt'.format(pi_id[0])), map_location=self.device))
         if self.args.is_decay_pi:
-            self.update_actor.load_state_dict(torch.load(os.path.join(pi_net_path, 'pi_{}.pt'.format(pi_id[0])), map_location=self._device))
+            self.update_actor.load_state_dict(torch.load(os.path.join(pi_net_path, 'pi_{}.pt'.format(pi_id[0])), map_location=self.device))
         print('Policy parameters loaded')
-        self.critic.load_state_dict(torch.load(value_path, map_location=self._device))
+        self.critic.load_state_dict(torch.load(value_path, map_location=self.device))
         print('Value parameters loaded')
 
     def set_critic(self, critic):
