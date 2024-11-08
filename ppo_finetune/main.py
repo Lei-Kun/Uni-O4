@@ -55,7 +55,7 @@ if __name__ == '__main__':
     parser.add_argument("--is_from_bppo", type=bool, default=True, help="training from scratch or fine-tune from bppo")
     parser.add_argument("--is_load_value", type=bool, default=True, help="training from scratch or fine-tune from bppo")
     parser.add_argument("--is_shuffle", type=bool, default=False, help="shuffle the dataset")
-    parser.add_argument("--pi_load_path", type=str, default='pi_', help="training env")
+    parser.add_argument("--pi_load_path", type=str, default='pi', help="training env")
     parser.add_argument("--v_load_path", type=str, default='/home/lk/mobile-main/logs_clip', help="training env")
     parser.add_argument("--r_scale", default=1., type=float, help='the weight of Q loss')
     parser.add_argument("--is_clip_value", default=True, type=bool, help='Asynchronous Update: train critic then update policy')
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         args.r_scale = 0.1
     
     # align config params with offline phase, e.g., use_state_norm, use_tanh etc.
-    load_path = os.path.join('../logs', args.env_name, str(args.seed))
+    load_path = os.path.abspath(os.path.join('../logs', args.env_name, str(args.seed)))
     config_path = os.path.join(load_path, args.pi_load_path)
     dirs = glob.glob(f"{config_path}/*")
     logdir = sorted(dirs)[-1]
