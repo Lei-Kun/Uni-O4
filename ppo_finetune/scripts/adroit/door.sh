@@ -6,7 +6,7 @@ do
     do
         for lr_a in 8e-6 1e-5 4e-06 
         do
-            for strategy in 'dynamic' 'number'
+            for strategy in 'number' 'dynamic'
             do
             python main.py \
             --lr_c 2e-4 \
