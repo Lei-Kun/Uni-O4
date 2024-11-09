@@ -40,37 +40,38 @@ def rollout(
         # rollout
         observations = init_obss
         length = 0
-        for _ in range(rollout_length):
-            
-            if not args.is_eval_state_norm:
-                if args.is_state_norm:
-                    s = (observations - torch.FloatTensor(mean).to(args.device)) / torch.FloatTensor(std).to(args.device)
+        with torch.no_grad():
+            for _ in range(rollout_length):
+                
+                if not args.is_eval_state_norm:
+                    if args.is_state_norm:
+                        s = (observations - torch.FloatTensor(mean).to(args.device)) / torch.FloatTensor(std).to(args.device)
+                    else:
+                        s = observations
                 else:
                     s = observations
-            else:
-                s = observations
 
-            actions = policy.select_action(s, is_sample=False)
+                actions = policy.select_action(s, is_sample=False)
 
-            Q_value = Q(s, actions)
-            next_observations, rewards, terminals, info = dynamics.step(observations.cpu().data.numpy(), actions.cpu().data.numpy())
+                Q_value = Q(s, actions)
+                next_observations, rewards, terminals, info = dynamics.step(observations.cpu().data.numpy(), actions.cpu().data.numpy())
 
-            rollout_transitions["obss"].append(observations)
-            rollout_transitions["next_obss"].append(next_observations)
-            rollout_transitions["actions"].append(actions)
-            rollout_transitions["rewards"].append(rewards)
-            rollout_transitions["terminals"].append(terminals)
+                rollout_transitions["obss"].append(observations)
+                rollout_transitions["next_obss"].append(next_observations)
+                rollout_transitions["actions"].append(actions)
+                rollout_transitions["rewards"].append(rewards)
+                rollout_transitions["terminals"].append(terminals)
 
-            num_transitions += len(observations)
-            rewards_arr = np.append(rewards_arr, rewards.flatten())
-            total_q = np.append(total_q, Q_value.cpu().data.numpy().flatten())
-            nonterm_mask = (~terminals).flatten()
-            length += 1
-            if nonterm_mask.sum() == 0:
-                print('terminal length: {}'.format(length))
-                break
+                num_transitions += len(observations)
+                rewards_arr = np.append(rewards_arr, rewards.flatten())
+                total_q = np.append(total_q, Q_value.cpu().data.numpy().flatten())
+                nonterm_mask = (~terminals).flatten()
+                length += 1
+                if nonterm_mask.sum() == 0:
+                    print('terminal length: {}'.format(length))
+                    break
 
-            observations = torch.FloatTensor(next_observations[nonterm_mask]).to(args.device)
+                observations = torch.FloatTensor(next_observations[nonterm_mask]).to(args.device)
 
         return total_q.mean(), rewards_arr.mean()
     
