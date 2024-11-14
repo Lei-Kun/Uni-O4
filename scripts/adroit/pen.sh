@@ -1,7 +1,7 @@
 
 
 
-for seed in 0 1 2 3 4
+for seed in 0 1 2
 do
     for rollout_step in 50 20 100
     do 
@@ -18,6 +18,9 @@ do
         --bppo_lr 1e-5 \
         --bppo_steps 10000 \
         --rollout_step $rollout_step \
+        --v_steps 1e6 \
+        --q_bc_steps 1e6 \
+        --bc_steps 2e5 \
         --eval_step 100 \
         --gpu 6
     done

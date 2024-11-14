@@ -15,13 +15,14 @@ from net import ValueLearner
 from collections import deque
 from offline_buffer import OfflineReplayBuffer
 import glob
+import wandb
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("Hyperparameters Setting for PPO")
     # base hyperparameters and settings for online ppo
     parser.add_argument("--env_name", type=str, default='walker2d-medium-replay-v2', help="training env")
     parser.add_argument("--seed", type=int, default=1, help="run with a fixed seed")
-    parser.add_argument("--max_train_steps", type=int, default=int(1e6), help=" Maximum number of training steps")
-    parser.add_argument("--evaluate_freq", type=int, default=5e3, help="Evaluate the policy every 'evaluate_freq' steps")
+    parser.add_argument("--max_train_steps", type=int, default=int(3e6), help=" Maximum number of training steps")
+    parser.add_argument("--evaluate_freq", type=int, default=2e4, help="Evaluate the policy every 'evaluate_freq' steps")
     parser.add_argument("--save_freq", type=int, default=20, help="Save frequency")
     parser.add_argument("--batch_size", type=int, default=2048, help="Batch size")
     parser.add_argument("--mini_batch_size", type=int, default=128, help="Minibatch size")
@@ -107,7 +108,12 @@ if __name__ == '__main__':
     print('v_hidden_width: {}'.format(args.v_hidden_width))
     path = os.path.join(args.path, args.env_name, str(args.seed))
     current_time = time.strftime("%Y_%m_%d__%H_%M_%S", time.localtime())
-
+    wandb.init(
+        project = 'diffusion-ppo',
+        config = {
+            'scale_strategy': args.scale_strategy,    
+        }
+    )
     # summarywriter logger
     comment = args.env_name + '_' + str(args.seed)
     logger_path = os.path.join(path, current_time)
@@ -240,6 +246,7 @@ if __name__ == '__main__':
                 print("evaluate_num:{} \t evaluate_reward:{} \t d4rl_score: {}".format(evaluate_num, avg_return, d4rl_score))
                 print('collecting performance: {}, actor_loss: {}, critic_loss: {}'.format(np.mean(total_episode_r), np.mean(actor_losses[int(-args.evaluate_freq):]), np.mean(critic_losses[int(-args.evaluate_freq):])))
             
+                wandb.log({'evaluate_reward': avg_return, 'd4rl_score': d4rl_score, 'collecting_performance': np.mean(total_episode_r[-1])})
                 writer.add_scalar('step_rewards_{}'.format(env_name), scores[-1], global_step=total_steps)
                 writer.add_scalar('actor_loss_{}'.format(env_name), np.mean(actor_losses[int(-args.evaluate_freq):]), global_step=total_steps)
                 writer.add_scalar('critic_loss_{}'.format(env_name), np.mean(critic_losses[int(-args.evaluate_freq):]), global_step=total_steps)

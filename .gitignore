@@ -10,6 +10,7 @@ logs_scale/**
 base.py
 ppo_finetune/logs/**
 ppo_finetune/logs_noscale/**
+ppo_finetune/wandb/**
 
 halfmr.sh
 hmr.sh

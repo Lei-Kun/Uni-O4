@@ -1,19 +1,20 @@
 
 
+
 for seed in 0 1 2 3 4
 do
-    for lr_a in 3e-5
+    for lr_a in 1e-5 3e-5
     do
+        for epochs in 20 30 
         python main.py \
         --lr_c 2e-4 \
         --lr_a $lr_a \
         --seed $seed \
         --env_name walker2d-medium-replay-v2 \
-        --K_epochs 30 \
-        --gpu 2
+        --K_epochs $epochs \
+        --gpu 3
     done
 done
-
 
 
 

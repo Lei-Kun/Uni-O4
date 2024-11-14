@@ -105,8 +105,8 @@ if __name__ == "__main__":
     # path
     current_time = time.strftime("%Y_%m_%d__%H_%M_%S", time.localtime())
     path = os.path.join(args.path, args.env, str(args.seed))
-    bc_path = os.path.join(path, 'bc_/{}'.format(args.alpha_bc))
-    # bc_path = os.path.join(path, 'bc_{}_{}/{}'.format(args.bc_hidden_dim, args.bc_depth, args.alpha_bc))
+    # bc_path = os.path.join(path, 'bc_/{}'.format(args.alpha_bc))
+    bc_path = os.path.join(path, 'bc_{}/{}'.format(args.bc_hidden_dim, args.alpha_bc))
     os.makedirs(bc_path, exist_ok=True)
     # save args
     os.makedirs(os.path.join(path, 'pi', current_time), exist_ok=True)
