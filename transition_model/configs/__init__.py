@@ -4,6 +4,8 @@ from .neorl import *
 from .antmaze import *
 
 loaded_args = {
+    "default": pen_human_args,
+
     # d4rl gym
     "halfcheetah-random-v2": halfcheetah_random_args,
     "hopper-random-v2": hopper_random_args,

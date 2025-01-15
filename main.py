@@ -14,6 +14,7 @@ from critic import ValueLearner, QPiLearner, QSarsaLearner, IQL_Q_V
 from abppo import AdaptiveBehaviorProximalPolicyOptimization
 from dynamics_eval import dynamics_eval, train_dynamics # The code base of transition model is from mobile https://github.com/yihaosun1124/mobile
 
+from termcolor import cprint
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # Experiment
@@ -89,9 +90,13 @@ if __name__ == "__main__":
 
     parser.add_argument("--eval_episode", default=10, type=int)
     known_args, _ = parser.parse_known_args()
-    default_args = loaded_args[known_args.env]
+    if known_args.env not in loaded_args:
+        cprint(f'env {known_args.env} not in config file for dynamic training/try yourself or use one of the following', 'red')
+        cprint('if do not define the terminal function, please try the hyperparameter "rollout_step" from small to large, e.g. 10, 20 -> 500', 'red')
+        default_args = loaded_args['default']
+    else:
+        default_args = loaded_args[known_args.env]
     for arg_key, default_value in default_args.items():
-        print(arg_key)
         parser.add_argument(f'--{arg_key}', default=default_value, type=type(default_value))
         
     args = parser.parse_args()

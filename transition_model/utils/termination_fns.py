@@ -1,5 +1,6 @@
 import numpy as np
 
+from termcolor import cprint
 
 def termination_fn_halfcheetah(obs, act, next_obs, env = None):
     assert len(obs.shape) == len(next_obs.shape) == len(act.shape) == 2
@@ -143,4 +144,5 @@ def get_termination_fn(task):
     elif 'antmaze' in task:
         return terminaltion_fn_antmaze
     else:
-        raise np.zeros
+        cprint('Task not found; please define the termination function by your tasks or do not using a termination function', 'red')
+        return terminaltion_fn_door

@@ -4,11 +4,13 @@ do
         for bc_hidden_dim in 256 512
         do
         for rollout_step in 1000 500
+        do
         python main.py --env hopper-medium-replay-v2 \
         --seed $seed \
         --is_state_norm True \
         --rollout_step $rollout_step \
         --bc_hidden_dim $bc_hidden_dim \
         --gpu 0
+        done
         done
 done
