@@ -39,6 +39,14 @@ We evaluate Uni-O4 on standard D4RL benchmarks during offline and online fine-tu
 
 Clone each branch:
 `git clone -b [Branch Name] https://github.com/Lei-Kun/Uni-O4.git`
+
+#### NOTE1: The key hyper-parameters for the offline phase, are whether state normalization is chosen, the rollout steps for offline policy evaluation, and the policy improvement learning rate.
+
+#### NOTE2: During the offline policy improvement stage, if the OPE score (i.e., 'q mean') becomes excessively large or unstable, consider reducing the number of rollout steps.
+
+#### NOTE3: The performance of online PPO largely depends on the hyper-parameters and some well-known tricks, see [here](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/).
+
+#### NOTE4: If you wanna run your tasks, please add a termination function for the dynamics model training or do not use any termination function, thus you need to try the hyperparameter 'rollout_step'.
 ## For D4RL benchmarks
 ### Requirements
 - `torch                         1.12.0`
@@ -61,13 +69,7 @@ To install all the required dependencies:
 ./ppo_finetune/scripts/mujoco_loco/hm.sh
 ```
 
-#### NOTE1: The key hyper-parameters for the offline phase, are whether state normalization is chosen, the rollout steps for offline policy evaluation, and the policy improvement learning rate.
 
-#### NOTE2: During the offline policy improvement stage, if the OPE score (i.e., 'q mean') becomes excessively large or unstable, consider reducing the number of rollout steps.
-
-#### NOTE3: The performance of online PPO largely depends on the hyper-parameters and some well-known tricks, see [here](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/).
-
-#### NOTE3: If you wanna run your tasks, please add a termination function for the dynamics model training or do not use any termination function, thus you need to try the hyperparameter 'rollout_step'.
 
 ## Real-world tasks set-up
 See [INSTALL.md](INSTALL.md) for installation instructions. 
