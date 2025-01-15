@@ -67,6 +67,8 @@ To install all the required dependencies:
 
 #### NOTE3: The performance of online PPO largely depends on the hyper-parameters and some well-known tricks, see [here](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/).
 
+#### NOTE3: If you wanna run your tasks, please add a termination function for the dynamics model training or do not use any termination function, thus you need to try the hyperparameter 'rollout_step'.
+
 ## Real-world tasks set-up
 See [INSTALL.md](INSTALL.md) for installation instructions. 
 
