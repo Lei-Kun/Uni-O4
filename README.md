@@ -47,6 +47,9 @@ Clone each branch:
 #### NOTE3: The performance of online PPO largely depends on the hyper-parameters and some well-known tricks, see [here](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/).
 
 #### NOTE4: If you wanna run your tasks, please add a termination function for the dynamics model training or do not use any termination function, thus you need to try the hyperparameter 'rollout_step'.
+
+#### NOTE5: We've tried Uni-O4 on visual-input tasks, and the good properties are also that there is no drop or sub-optimality. If you are interested in the visual version of Uni-O4, please feel free to email me.
+
 ## For D4RL benchmarks
 ### Requirements
 - `torch                         1.12.0`
